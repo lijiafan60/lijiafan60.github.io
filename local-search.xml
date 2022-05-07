@@ -4,6 +4,87 @@
   
   
   <entry>
+    <title>Java多线程(面经)</title>
+    <link href="/2022/05/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
+    <url>/2022/05/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>面经整理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java多线程</tag>
+      
+      <tag>面经</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Java基础(面经)</title>
+    <link href="/2022/05/07/Java%E5%9F%BA%E7%A1%80%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
+    <url>/2022/05/07/Java%E5%9F%BA%E7%A1%80%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>面经整理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>面经</tag>
+      
+      <tag>Java基础</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>深入理解Kafka</title>
+    <link href="/2022/05/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Kafka/"/>
+    <url>/2022/05/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Kafka/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>消息队列</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>消息队列</tag>
+      
+      <tag>Kafka</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>在阿里云服务器上部署docker</title>
     <link href="/2022/05/04/%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E9%83%A8%E7%BD%B2docker/"/>
     <url>/2022/05/04/%E5%9C%A8%E9%98%BF%E9%87%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E9%83%A8%E7%BD%B2docker/</url>
@@ -23,31 +104,6 @@
       <tag>Docker</tag>
       
       <tag>环境部署</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="/2022/04/30/hello-world/"/>
-    <url>/2022/04/30/hello-world/</url>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>first</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>start</tag>
       
     </tags>
     
