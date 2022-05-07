@@ -58,6 +58,33 @@
   
   
   <entry>
+    <title>Java多线程(面经)</title>
+    <link href="/2022/05/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
+    <url>/2022/05/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>面经整理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Java多线程</tag>
+      
+      <tag>面经</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>计算机网络（面经）</title>
     <link href="/2022/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
     <url>/2022/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
@@ -112,11 +139,11 @@
   
   
   <entry>
-    <title>深入理解Kafka</title>
+    <title>Kafka</title>
     <link href="/2022/05/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Kafka/"/>
     <url>/2022/05/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Kafka/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="为什么要用消息队列"><a href="#为什么要用消息队列" class="headerlink" title="为什么要用消息队列"></a>为什么要用消息队列</h1><h2 id="异步处理"><a href="#异步处理" class="headerlink" title="异步处理"></a>异步处理</h2><p>如果服务调用链路过长，会导致用户等待时间过长，这时一些不需要及时完成的操作，就可以进行异步处理，减少用户等待时间。</p><p>比如一个抽奖项目，有参与<strong>抽奖–中奖–发奖</strong>这三个流程，可以中奖后直接返回中奖结果给用户，然后向消息队列发送消息，发奖的服务再去消息队列中取对应的消息，完成发奖操作。</p><h2 id="削峰填谷"><a href="#削峰填谷" class="headerlink" title="削峰填谷"></a>削峰填谷</h2><p>在类似秒杀活动中,为了避免流量一下子打到服务端，可以前置一个消息队列当作缓冲，服务端尽最大努力取消息队列消费消息，一些超时的请求可以直接返回错误。</p><h2 id="服务解耦"><a href="#服务解耦" class="headerlink" title="服务解耦"></a>服务解耦</h2><p>在商城项目中，用户下订单后，后端会根据生成的订单进行一系列操作，比如：vip等级变更，加积分等，如果这时候公司又要加一些其他服务，那么可能会影响到订单服务。这时候可以加一个发布-订阅模式的消息队列，订单服务生成订单后直接丢到消息队列里，其他下游服务需要订单信息的话再从消息队列中取就行了。</p><h1 id="消息队列会带来哪些问题，如何解决"><a href="#消息队列会带来哪些问题，如何解决" class="headerlink" title="消息队列会带来哪些问题，如何解决"></a>消息队列会带来哪些问题，如何解决</h1><h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p>Kafka中的多副本机制允许Partition拥有多个副本，多个副本间数据一致，正常情况下Producer和Consumer都和Leader进行交互。当一个Broker挂掉并且Leader就在这个Broker中，可以在剩余副本中重新选举Leader，来保证高可用性和安全性。</p><blockquote><p>为什么只能和leader交互？ 如果可以随意读写每个follower，就要考虑数据的一致性，会增加系统复杂度，降低容错性。</p></blockquote><h2 id="消息顺序"><a href="#消息顺序" class="headerlink" title="消息顺序"></a>消息顺序</h2><p>在一些业务中需要保证消息被消费的顺序，在Producer生产消息的时候可以把这些消息指定相同的key，这样它们都会进入同一个Partition，这样就保证了有序性。</p><h2 id="消息丢失"><a href="#消息丢失" class="headerlink" title="消息丢失"></a>消息丢失</h2><blockquote><p>消息丢失可以从以下三个方面考虑：</p></blockquote><h3 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h3><blockquote><p>生产者发送的消息因为网络原因并没有到达Broker导致消息丢失</p></blockquote><p>在调用send()函数发送完消息后，为了确保消息到达Broker，可以添加回调函数知道Broker时候接收到。另外可以把<strong>retries</strong>参数设置成&gt;3，可以实现自动重发消息。</p><h3 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h3><blockquote><p>消费者接收消息后，自动提交offset，这时候消费者宕机了，就会导致消息丢失</p></blockquote><p>关闭自动提交offset，等处理完业务后，再手动提交。但是如果业务完成后宕机了，没有提交成功，当再次开始处理消息的时候，就会导致重复消费的问题。</p><h3 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h3><blockquote><p>如果一个leader挂掉了，这时候数据还没来得及同步到副本中，信息就丢失了。</p></blockquote><p>可以设置 ：</p><ul><li><p>acks &#x3D; all</p><p>所有副本都<strong>接收</strong>消息后，才算发送成功</p></li><li><p>replication.factor &gt;&#x3D; 3</p><p>副本数量大于3</p></li><li><p>min.insync.replicas &gt; 1</p><p>消息至少被<strong>写入</strong>两个副本才算发送成功</p></li><li><p>unclean.leader.election.enable &#x3D; false</p><p>leader故障后只从和leader完全同步的副本中选举新leader</p></li></ul><h2 id="消息重复"><a href="#消息重复" class="headerlink" title="消息重复"></a>消息重复</h2><blockquote><p>Consumer消费完消息后，还没提交就挂了</p></blockquote><p>设计全局ID，做幂等性校验。</p><h2 id="消息堆积"><a href="#消息堆积" class="headerlink" title="消息堆积"></a>消息堆积</h2><ul><li>看能否提高服务端处理消息都速度，比如多次数据库插入，优化成批量插入</li><li>扩容，增加topic队列和消费者数量，<strong>（一个队列只会分配给一个消费者）</strong></li></ul>]]></content>
     
     
     <categories>
@@ -158,33 +185,6 @@
       <tag>Docker</tag>
       
       <tag>环境部署</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Java多线程(面经)</title>
-    <link href="/2022/04/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/04/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    
-    <categories>
-      
-      <category>面经整理</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Java多线程</tag>
-      
-      <tag>面经</tag>
       
     </tags>
     
