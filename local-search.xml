@@ -4,11 +4,90 @@
   
   
   <entry>
+    <title>ClassCastException之同类型bean无法进行类型转换的问题</title>
+    <link href="/2022/05/12/%E5%90%8C%E7%B1%BB%E5%9E%8Bbean%E6%97%A0%E6%B3%95%E8%BF%9B%E8%A1%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <url>/2022/05/12/%E5%90%8C%E7%B1%BB%E5%9E%8Bbean%E6%97%A0%E6%B3%95%E8%BF%9B%E8%A1%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>在进行微信公众号开发的时候，需要把接收的xml转换成bean，用到了Xstream类型转换框架。</p><figure class="highlight java"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; T <span class="hljs-title function_">xmlToBean</span><span class="hljs-params">(String resultXml, Class clazz)</span> &#123;<br>    <span class="hljs-type">XStream</span> <span class="hljs-variable">stream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">XStream</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">DomDriver</span>());<br>    XStream.setupDefaultSecurity(stream);<br>    stream.allowTypes(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Class</span>[]&#123;clazz&#125;);<br>    stream.processAnnotations(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Class</span>[]&#123;clazz&#125;);<br>    stream.setMode(XStream.NO_REFERENCES);<br>    stream.alias(<span class="hljs-string">&quot;xml&quot;</span>, clazz);<br>    <span class="hljs-keyword">return</span> (T) stream.fromXML(resultXml);<br>&#125;<br></code></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">MessageTextEntity</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> XmlUtil.xmlToBean(requestBody, MessageTextEntity.class);<br></code></pre></td></tr></table></figure><p>可以看到这里需要进行一个同类型的转换，但是出现了以下报错：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">java.lang.ClassCastException: com.ljf.ploughthewaves.domain.wx.model.MessageTextEntity cannot be cast to com.ljf.ploughthewaves.domain.wx.model.MessageTextEntity<br>at com.ljf.ploughthewaves.interfaces.WxPortalController.post(WxPortalController.java:<span class="hljs-number">75</span>) ~[classes/:na]<br>at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:<span class="hljs-number">1.8</span><span class="hljs-number">.0_311</span>]<br>at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="hljs-number">62</span>) ~[na:<span class="hljs-number">1.8</span><span class="hljs-number">.0_311</span>]<br>at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="hljs-number">43</span>) ~[na:<span class="hljs-number">1.8</span><span class="hljs-number">.0_311</span>]<br>at java.lang.reflect.Method.invoke(Method.java:<span class="hljs-number">498</span>) ~[na:<span class="hljs-number">1.8</span><span class="hljs-number">.0_311</span>]<br>at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:<span class="hljs-number">205</span>) [spring-web-<span class="hljs-number">5.3</span><span class="hljs-number">.13</span>.jar:<span class="hljs-number">5.3</span><span class="hljs-number">.13</span>]<br>at ......<br><br></code></pre></td></tr></table></figure><p>可以注意到这是<strong>同类型bean</strong>转换出错。</p><h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><p>写了个测试类模拟了一下，发现在测试类中竟然无法复现这个问题……</p><p>那么问题一定就出在业务代码中，回顾一下Java是如何判断两个类相等的：</p><p><strong>类的全限定名+类的加载器</strong></p><p>试着在代码中打印一下每一步的类加载器发现：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">类加载器<span class="hljs-number">1</span>: org.springframework.boot.devtools.restart.classloader.RestartClassLoader@53a644b8<br>类加载器<span class="hljs-number">2</span>：org.springframework.boot.devtools.restart.classloader.RestartClassLoader@53a644b8<br>类加载器<span class="hljs-number">3</span>：sun.misc.Launcher$AppClassLoader@18b4aac2<br></code></pre></td></tr></table></figure><p><strong>xmltobean方法生成的对象的类加载器和需要转换的bean的类加载器不一样</strong>，所以导致了类不能转换。</p><p>可以看到bean的类加载器被devtools替换成了它自己的类加载器。</p><h1 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h1><p>禁用spring-boot-devtools 或者把restart属性设置为false</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Bugs</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Bugs</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>JVM（面经）</title>
+    <link href="/2022/05/09/JVM%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
+    <url>/2022/05/09/JVM%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>面经整理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>JVM</tag>
+      
+      <tag>面经</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Redis（面经）</title>
+    <link href="/2022/05/09/Redis%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
+    <url>/2022/05/09/Redis%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Redis的Zset底层是如何实现的？"><a href="#Redis的Zset底层是如何实现的？" class="headerlink" title="Redis的Zset底层是如何实现的？"></a>Redis的Zset底层是如何实现的？</h2><h2 id="Redis有哪些应用场景？"><a href="#Redis有哪些应用场景？" class="headerlink" title="Redis有哪些应用场景？"></a>Redis有哪些应用场景？</h2><h2 id="redis缓存雪崩和缓存穿透是什么，如何解决"><a href="#redis缓存雪崩和缓存穿透是什么，如何解决" class="headerlink" title="redis缓存雪崩和缓存穿透是什么，如何解决"></a>redis缓存雪崩和缓存穿透是什么，如何解决</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>面经整理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>面经</tag>
+      
+      <tag>Redis</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>数据库（面经）</title>
     <link href="/2022/05/07/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
     <url>/2022/05/07/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><h2 id="索引的底层结构是什么，有什么好处？"><a href="#索引的底层结构是什么，有什么好处？" class="headerlink" title="索引的底层结构是什么，有什么好处？"></a>索引的底层结构是什么，有什么好处？</h2><h2 id="索引有什么好处与坏处？"><a href="#索引有什么好处与坏处？" class="headerlink" title="索引有什么好处与坏处？"></a>索引有什么好处与坏处？</h2><h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><h2 id="如果访问量过大，该使用什么措施"><a href="#如果访问量过大，该使用什么措施" class="headerlink" title="如果访问量过大，该使用什么措施"></a>如果访问量过大，该使用什么措施</h2>]]></content>
     
     
     <categories>
@@ -23,6 +102,31 @@
       <tag>面经</tag>
       
       <tag>数据库</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>消息队列（面经）</title>
+    <link href="/2022/05/07/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
+    <url>/2022/05/07/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>面经整理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>消息队列，面经</tag>
       
     </tags>
     
@@ -62,7 +166,7 @@
     <link href="/2022/05/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
     <url>/2022/05/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><h2 id="进程与线程的区别"><a href="#进程与线程的区别" class="headerlink" title="进程与线程的区别"></a>进程与线程的区别</h2><h2 id="进程间的通信方式有哪些"><a href="#进程间的通信方式有哪些" class="headerlink" title="进程间的通信方式有哪些"></a>进程间的通信方式有哪些</h2><h2 id="共享内存的原理"><a href="#共享内存的原理" class="headerlink" title="共享内存的原理"></a>共享内存的原理</h2>]]></content>
     
     
     <categories>
@@ -74,9 +178,9 @@
     
     <tags>
       
-      <tag>Java多线程</tag>
-      
       <tag>面经</tag>
+      
+      <tag>Java多线程</tag>
       
     </tags>
     
@@ -89,7 +193,7 @@
     <link href="/2022/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
     <url>/2022/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h1><h2 id="http和https的区别"><a href="#http和https的区别" class="headerlink" title="http和https的区别"></a>http和https的区别</h2><h2 id="http2-0-相较于1-0-有什么改动"><a href="#http2-0-相较于1-0-有什么改动" class="headerlink" title="http2.0 相较于1.0 有什么改动"></a>http2.0 相较于1.0 有什么改动</h2><h1 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h1><h2 id="讲一下TCP和UDP"><a href="#讲一下TCP和UDP" class="headerlink" title="讲一下TCP和UDP"></a>讲一下TCP和UDP</h2><h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2>]]></content>
     
     
     <categories>
