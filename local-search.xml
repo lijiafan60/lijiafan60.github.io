@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>在docker上部署kafka</title>
+    <link href="/2022/06/21/%E5%9C%A8docker%E4%B8%8A%E9%83%A8%E7%BD%B2kafka/"/>
+    <url>/2022/06/21/%E5%9C%A8docker%E4%B8%8A%E9%83%A8%E7%BD%B2kafka/</url>
+    
+    <content type="html"><![CDATA[<h1 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h1><figure class="highlight shell"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><pre><code class="hljs shell">docker pull wurstmeister/kafka<br>docker pull wurstmeister/zookeeper<br></code></pre></td></tr></table></figure><h1 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -d --name zookeeper -p 2181:2181 -t wurstmeister/zookeeper<br></code></pre></td></tr></table></figure><h1 id="启动Kafka"><a href="#启动Kafka" class="headerlink" title="启动Kafka"></a>启动Kafka</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -d --name kafka \<br>-p 9092:9092 \<br>-e KAFKA_BROKER_ID=0 \<br>-e KAFKA_ZOOKEEPER_CONNECT=服务器IP:2181 \<br>-e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://服务器IP:9092 \<br>-e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 wurstmeister/kafka<br></code></pre></td></tr></table></figure><h1 id="放行端口"><a href="#放行端口" class="headerlink" title="放行端口"></a>放行端口</h1>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>环境配置</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>双重检测锁为什么要加Volatile</title>
     <link href="/2022/06/09/%E5%8F%8C%E9%87%8D%E6%A3%80%E6%B5%8B%E9%94%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8A%A0Volatile/"/>
     <url>/2022/06/09/%E5%8F%8C%E9%87%8D%E6%A3%80%E6%B5%8B%E9%94%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8A%A0Volatile/</url>
@@ -25,33 +44,6 @@
       <tag>volatile</tag>
       
       <tag>多线程</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Spring（面经）</title>
-    <link href="/2022/06/08/spring%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/06/08/spring%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
-    
-    <content type="html"><![CDATA[<h1 id="BeanFactory"><a href="#BeanFactory" class="headerlink" title="BeanFactory"></a>BeanFactory</h1><h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h2 id="Spring声明式事务原理？哪些场景事务会失效？-1"><a href="#Spring声明式事务原理？哪些场景事务会失效？-1" class="headerlink" title="Spring声明式事务原理？哪些场景事务会失效？ 1"></a>Spring声明式事务原理？哪些场景事务会失效？ <em>1</em></h2>]]></content>
-    
-    
-    <categories>
-      
-      <category>面经整理</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>面经</tag>
-      
-      <tag>Spring</tag>
       
     </tags>
     
@@ -129,36 +121,11 @@
   
   
   <entry>
-    <title>Redis实现接口限流</title>
-    <link href="/2022/06/03/Redis%E5%AE%9E%E7%8E%B0%E6%8E%A5%E5%8F%A3%E9%99%90%E6%B5%81/"/>
-    <url>/2022/06/03/Redis%E5%AE%9E%E7%8E%B0%E6%8E%A5%E5%8F%A3%E9%99%90%E6%B5%81/</url>
+    <title>接口限流原理到实践</title>
+    <link href="/2022/06/03/%E6%8E%A5%E5%8F%A3%E9%99%90%E6%B5%81%E5%8E%9F%E7%90%86%E5%88%B0%E5%AE%9E%E8%B7%B5/"/>
+    <url>/2022/06/03/%E6%8E%A5%E5%8F%A3%E9%99%90%E6%B5%81%E5%8E%9F%E7%90%86%E5%88%B0%E5%AE%9E%E8%B7%B5/</url>
     
     <content type="html"><![CDATA[<h1 id="接口限流的4中方案"><a href="#接口限流的4中方案" class="headerlink" title="接口限流的4中方案"></a>接口限流的4中方案</h1><h2 id="固定窗口计数器"><a href="#固定窗口计数器" class="headerlink" title="固定窗口计数器"></a>固定窗口计数器</h2><ul><li>将时间划分为多个窗口</li><li>在每个窗口内每有一次请求就将计数器加一</li><li>如果计数器超过了限制数量，则本窗口内所有的请求都被丢弃当时间到达下一个窗口时，计数器重置。</li><li>固定窗口计数器是最为简单的算法，但这个算法有时会让通过请求量允许为限制的两倍。考虑如下情况：限制 1 秒内最多通过 5 个请求，在第一个窗口的最后半秒内通过了 5 个请求，第二个窗口的前半秒内又通过了 5 个请求。这样看来就是在 1 秒内通过了 10 个请求。</li></ul><h2 id="滑动窗口计数器"><a href="#滑动窗口计数器" class="headerlink" title="滑动窗口计数器"></a>滑动窗口计数器</h2><ul><li>将时间划分为多个区间；</li><li>在每个区间内每有一次请求就将计数器加一维持一个时间窗口，占据多个区间；</li><li>每经过一个区间的时间，则抛弃最老的一个区间，并纳入最新的一个区间；</li><li>如果当前窗口内区间的请求计数总和超过了限制数量，则本窗口内所有的请求都被丢弃。</li><li>滑动窗口计数器是通过将窗口再细分，并且按照时间 “ 滑动 “，这种算法避免了固定窗口计数器带来的双倍突发请求，但时间区间的精度越高，算法所需的空间容量就越大。</li></ul><h2 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h2><ul><li>将每个请求视作 “ 水滴 “ 放入 “ 漏桶 “ 进行存储；</li><li>漏桶算法多使用队列实现，服务的请求会存到队列中，服务的提供方则按照固定的速率从队列中取出请求并执行，过多的请求则放在队列中排队或直接拒绝。</li><li>漏桶算法的缺陷也很明显，当短时间内有大量的突发请求时，即便此时服务器没有任何负载，每个请求也都得在队列中等待一段时间才能被响应。</li></ul><h2 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h2><ul><li>令牌以固定速率生成。</li><li>生成的令牌放入令牌桶中存放，如果令牌桶满了则多余的令牌会直接丢弃，当请求到达时，会尝试从令牌桶中取令牌，取到了令牌的请求可以执行。</li><li>如果桶空了，那么尝试取令牌的请求会被直接丢弃。</li><li>令牌桶算法既能够将所有的请求平均分布到时间区间内，又能接受服务器能够承受范围内的突发请求，因此是目前使用较为广泛的一种限流算法。</li></ul><h1 id="使用令牌桶方法实现接口限流"><a href="#使用令牌桶方法实现接口限流" class="headerlink" title="使用令牌桶方法实现接口限流"></a>使用令牌桶方法实现接口限流</h1>]]></content>
-    
-    
-    <categories>
-      
-      <category>Redis</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Redis</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Redis基础概念</title>
-    <link href="/2022/06/02/Redis%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/"/>
-    <url>/2022/06/02/Redis%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/</url>
-    
-    <content type="html"><![CDATA[<h1 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h1><p>redis是一款基于c语言开发的内存数据库，速度非常快，经常被用来做缓存</p><h1 id="Redis的基本数据类型"><a href="#Redis的基本数据类型" class="headerlink" title="Redis的基本数据类型"></a>Redis的基本数据类型</h1><h1 id="Redis应用场景"><a href="#Redis应用场景" class="headerlink" title="Redis应用场景"></a>Redis应用场景</h1><h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><h1 id="文件事件处理器"><a href="#文件事件处理器" class="headerlink" title="文件事件处理器"></a>文件事件处理器</h1><h1 id="如何判断数据过期"><a href="#如何判断数据过期" class="headerlink" title="如何判断数据过期"></a>如何判断数据过期</h1><h1 id="过期键的删除策略"><a href="#过期键的删除策略" class="headerlink" title="过期键的删除策略"></a>过期键的删除策略</h1><h1 id="内存淘汰策略"><a href="#内存淘汰策略" class="headerlink" title="内存淘汰策略"></a>内存淘汰策略</h1><h1 id="缓存异常"><a href="#缓存异常" class="headerlink" title="缓存异常"></a>缓存异常</h1><h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><h2 id="缓存降级"><a href="#缓存降级" class="headerlink" title="缓存降级"></a>缓存降级</h2><h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h2 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h2><h2 id="如何开启事务"><a href="#如何开启事务" class="headerlink" title="如何开启事务"></a>如何开启事务</h2><h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><h1 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h1>]]></content>
     
     
     <categories>
@@ -231,43 +198,16 @@
   
   
   <entry>
-    <title>JVM（面经）</title>
-    <link href="/2022/05/09/JVM%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/05/09/JVM%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    <title>SQL更新语句的执行流程</title>
+    <link href="/2022/05/09/SQL%E6%9B%B4%E6%96%B0%E8%AF%AD%E5%8F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/"/>
+    <url>/2022/05/09/SQL%E6%9B%B4%E6%96%B0%E8%AF%AD%E5%8F%A5%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/</url>
     
-    <content type="html"><![CDATA[]]></content>
-    
-    
-    <categories>
-      
-      <category>面经整理</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>JVM</tag>
-      
-      <tag>面经</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Redis（面经）</title>
-    <link href="/2022/05/09/Redis%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/05/09/Redis%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
-    
-    <content type="html"><![CDATA[<h1 id="redis单线程为什么快-1"><a href="#redis单线程为什么快-1" class="headerlink" title="redis单线程为什么快 1"></a>redis单线程为什么快 <em>1</em></h1><h1 id="redisson分布式锁watch机制-1"><a href="#redisson分布式锁watch机制-1" class="headerlink" title="redisson分布式锁watch机制 1"></a>redisson分布式锁watch机制 <em>1</em></h1><h1 id="redis的应用场景有哪些-1"><a href="#redis的应用场景有哪些-1" class="headerlink" title="redis的应用场景有哪些 1"></a>redis的应用场景有哪些 <em>1</em></h1>]]></content>
+    <content type="html"><![CDATA[<p>执行一条“增删改”语句的时候，虽然没有输入 begin 开启事务和 commit 提交事务，但是 MySQL 会<strong>隐式开启事务</strong>来执行“增删改”语句的，执行完就自动提交事务的。</p><p>当有一条记录需要更新的时候，InnoDB 引擎就会先把记录写到 redo log里面，并更新内存，这个时候更新就算完成了。同时，InnoDB 引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做 </p><h1 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h1><p><code>redo log</code> 是物理日志，记录了某个数据页做了什么修改，对 XXX 表空间中的 YYY 数据页 ZZZ 偏移量的地方做了AAA 更新，每当执行一个事务就会产生这样的一条物理日志。</p><p> 为了防止断电导致数据丢失的问题，当有一条记录需要更新的时候，<code>InnoDB</code> 引擎就会先把记录写到 <code>redo log</code> 里面，并更新内存，这个时候更新就算完成了。同时，<code>InnoDB</code> 引擎会在适当的时候，由后台线程将缓存在 Buffer Pool 的脏页刷新到磁盘里 </p><p>在事务提交时，只要先将 <code>redo log</code> 持久化到磁盘即可，可以不需要将缓存在 Buffer Pool 里的脏页数据持久化到磁盘。当系统崩溃时，虽然脏页数据没有持久化，但是 <code>redo log</code> 已经持久化，接着 MySQL 重启后，可以根据 <code>redo log</code> 的内容，将所有数据恢复到最新的状态。</p><h2 id="刷盘时机"><a href="#刷盘时机" class="headerlink" title="刷盘时机"></a>刷盘时机</h2><p><code>InnoDB</code> 存储引擎为 <code>redo log</code> 的刷盘策略提供了 <code>innodb_flush_log_at_trx_commit</code> 参数，它支持三种策略：</p><ul><li><strong>0</strong> ：设置为 0 的时候，表示每次事务提交时不进行刷盘操作</li><li><strong>1</strong> ：设置为 1 的时候，表示每次事务提交时都将进行刷盘操作（默认值）</li><li><strong>2</strong> ：设置为 2 的时候，表示每次事务提交时都只把 redo log buffer 内容写入 page cache</li></ul><p><code>innodb_flush_log_at_trx_commit</code> 参数默认为 1 ，也就是说当事务提交时会调用 <code>fsync</code> 对 <code>redo log</code> 进行刷盘</p><p>另外，<code>InnoDB</code> 存储引擎有一个后台线程，每隔<code>1</code> 秒，就会把 <code>redo log buffer</code> 中的内容写到文件系统缓存（<code>page cache</code>），然后调用 <code>fsync</code> 刷盘。</p><h1 id="bin-log"><a href="#bin-log" class="headerlink" title="bin log"></a>bin log</h1><h2 id="文件格式"><a href="#文件格式" class="headerlink" title="文件格式"></a>文件格式</h2><p><code>binlog</code> 日志有三种格式，可以通过<code>binlog_format</code>参数指定。</p><ul><li><p><strong>statement</strong></p><p> 每一条修改数据的 SQL 都会被记录到 <code>binlog</code> 中（相当于记录了逻辑操作，所以针对这种格式， <code>binlog</code> 可以称为逻辑日志），主从复制中 slave 端再根据 SQL 语句重现。但 STATEMENT 有动态函数的问题，比如你用了 uuid 或者 now 这些函数，你在主库上执行的结果并不是你在从库执行的结果，这种随时在变的函数会导致复制的数据不一致； </p></li><li><p><strong>row</strong></p><p>记录行数据最终被修改成什么样了（这种格式的日志，就不能称为逻辑日志了），不会出现 STATEMENT 下动态函数的问题。但 ROW 的缺点是每行数据的变化结果都会被记录，比如执行批量 update 语句，更新多少行数据就会产生多少条记录，使 binlog 文件过大，而在 STATEMENT 格式下只会记录一个 update 语句而已； </p></li><li><p><strong>mixed</strong></p><p> 包含了 STATEMENT 和 ROW 模式，它会根据不同的情况自动使用 ROW 模式和 STATEMENT 模式；</p></li></ul><h2 id="刷盘时机-1"><a href="#刷盘时机-1" class="headerlink" title="刷盘时机"></a>刷盘时机</h2><p> 事务执行过程中，先把日志写到 <code>binlog cache</code>（Server 层的 cache），事务提交的时候，再把 <code>binlog cache</code> 写到 <code>binlog</code> 文件中。 </p><p>MySQL提供一个 <code>sync_binlog</code> 参数来控制数据库的 <code>binlog</code> 刷到磁盘上的频率：</p><ul><li><p>sync_binlog &#x3D; 0 </p><p>每次提交事务都只 write，不 fsync，后续交由操作系统决定何时将数据持久化到磁盘；</p></li><li><p>sync_binlog &#x3D; 1 </p><p>每次提交事务都会 write，然后马上执行 fsync；</p></li><li><p>sync_binlog &#x3D;N(N&gt;1) 的时候</p><p>每次提交事务都 write，但累积 N 个事务后才 fsync。</p></li></ul><p>在MySQL中系统默认的设置是 sync_binlog &#x3D; 0，也就是不做任何强制性的磁盘刷新指令，这时候的性能是最好的，但是风险也是最大的。因为一旦主机发生异常重启，在 binlog cache 中的所有 binlog 日志都会被丢失。</p><p>而当 sync_binlog 设置为 1 的时候，是最安全但是性能损耗最大的设置。因为当设置为1的时候，即使主机发生异常重启，也最多丢失 binlog cache 中未完成的一个事务，对实际数据没有任何实质性影响，就是对写入性能影响太大。</p><p>如果能容少量事务的 binlog 日志丢失的风险，为了提高写入的性能，一般会 sync_binlog 设置为 100~1000 中的某个数值。</p><h2 id="如果redo-log与binlog两份日志之间的逻辑不一致，会出现什么问题？"><a href="#如果redo-log与binlog两份日志之间的逻辑不一致，会出现什么问题？" class="headerlink" title="如果redo log与binlog两份日志之间的逻辑不一致，会出现什么问题？"></a>如果redo log与binlog两份日志之间的逻辑不一致，会出现什么问题？</h2><p><code>redo log</code>（重做日志）让<code>InnoDB</code>存储引擎拥有了崩溃恢复能力。</p><p><code>binlog</code>（归档日志）保证了<code>MySQL</code>集群架构的数据一致性。</p><p>虽然它们都属于持久化的保证，但是侧重点不同。</p><p>在执行更新语句过程，会记录<code>redo log</code>与<code>binlog</code>两块日志，以基本的事务为单位，<code>redo log</code>在事务执行过程中可以不断写入，而<code>binlog</code>只有在提交事务时才写入，所以<code>redo log</code>与<code>binlog</code>的写入时机不一样。</p><ul><li><strong>如果在将 redo log 刷入到磁盘之后， MySQL 突然宕机了，而 binlog 还没有来得及写入</strong>。MySQL 重启后，通过 redo log 能将 Buffer Pool 中 id &#x3D; 1 这行数据的 name 字段恢复到新值 xiaolin，但是 binlog 里面没有记录这条更新语句，在主从架构中，binlog 会被复制到从库，由于 binlog 丢失了这条更新语句，从库的这一行 name 字段是旧值 jay，与主库的值不一致性；</li><li><strong>如果在将 binlog 刷入到磁盘之后， MySQL 突然宕机了，而 redo log 还没有来得及写入</strong>。由于 redo log 还没写，崩溃恢复以后这个事务无效，所以 id &#x3D; 1 这行数据的 name 字段还是旧值 jay，而 binlog 里面记录了这条更新语句，在主从架构中，binlog 会被复制到从库，从库执行了这条更新语句，那么这一行 name 字段是新值 xiaolin，与主库的值不一致性；</li></ul><h2 id="两阶段提交"><a href="#两阶段提交" class="headerlink" title="两阶段提交"></a>两阶段提交</h2><p><strong>MySQL 为了避免出现两份日志之间的逻辑不一致的问题，使用了「两阶段提交」来解决</strong>，两阶段提交其实是分布式事务一致性协议，它可以保证多个逻辑操作要不全部成功，要不全部失败，不会出现半成功的状态。</p><p> 将<code>redo log</code>的写入拆成了两个步骤<code>prepare</code>和<code>commit</code>，这就是<strong>两阶段提交</strong>。 </p><p>在事务进行的时候写<code>redo log</code>，并且标记为prepare，在事务操作完成后，写入<code>bin log</code>，并将<code>redo log</code>标记为commit，至此完整的事务就完成了。</p><p> 使用<strong>两阶段提交</strong>后，写入<code>binlog</code>时发生异常也不会有影响，因为<code>MySQL</code>根据<code>redo log</code>日志恢复数据时，发现<code>redo log</code>还处于<code>prepare</code>阶段，并且没有对应<code>binlog</code>日志，就会回滚该事务。 </p><p>如果在<code>bin log</code>写完后宕机了，<code>redo log</code>还是prepare状态，那么会认为事务已经完成，根据<code>bin log</code>来恢复数据。</p>]]></content>
     
     
     <categories>
       
-      <category>面经整理</category>
+      <category>MySQL</category>
       
     </categories>
     
@@ -276,7 +216,7 @@
       
       <tag>面经</tag>
       
-      <tag>Redis</tag>
+      <tag>MySQL</tag>
       
     </tags>
     
@@ -285,70 +225,16 @@
   
   
   <entry>
-    <title>数据库（面经）</title>
-    <link href="/2022/05/07/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/05/07/%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    <title>僵尸进程与孤儿进程</title>
+    <link href="/2022/05/07/%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B/"/>
+    <url>/2022/05/07/%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B/</url>
     
-    <content type="html"><![CDATA[<h1 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h1><h2 id="innodb-update-和-select的加锁情况"><a href="#innodb-update-和-select的加锁情况" class="headerlink" title="innodb update 和 select的加锁情况"></a>innodb update 和 select的加锁情况</h2><h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h2 id="sql回滚怎么实现-1"><a href="#sql回滚怎么实现-1" class="headerlink" title="sql回滚怎么实现 1"></a>sql回滚怎么实现 <em>1</em></h2><h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><h2 id="索引的底层结构是什么，有什么好处和坏处？-1"><a href="#索引的底层结构是什么，有什么好处和坏处？-1" class="headerlink" title="索引的底层结构是什么，有什么好处和坏处？ 1"></a>索引的底层结构是什么，有什么好处和坏处？ <em>1</em></h2><h1 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h1><h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><h2 id="如果访问量过大，该使用什么措施-1"><a href="#如果访问量过大，该使用什么措施-1" class="headerlink" title="如果访问量过大，该使用什么措施 1"></a>如果访问量过大，该使用什么措施 <em>1</em></h2>]]></content>
-    
-    
-    <categories>
-      
-      <category>面经整理</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>面经</tag>
-      
-      <tag>数据库</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>消息队列（面经）</title>
-    <link href="/2022/05/07/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/05/07/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
-    
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="什么是僵尸进程和孤儿进程："><a href="#什么是僵尸进程和孤儿进程：" class="headerlink" title="什么是僵尸进程和孤儿进程："></a>什么是僵尸进程和孤儿进程：</h1><p>​        在 Unix&#x2F;Linux 系统中，正常情况下，子进程是通过父进程创建的，且两者的运行是相互独立的，父进程永远无法预测子进程到底什么时候结束。当一个进程调用 exit 命令结束自己的生命时，其实它并没有真正的被销毁，内核只是释放了该进程的所有资源，包括打开的文件、占用的内存等，但是留下一个称为僵尸进程的数据结构，这个结构保留了一定的信息（包括进程号 the process ID，退出状态，运行时间），这些信息直到父进程通过 wait()&#x2F;waitpid() 来取时才释放。这样设计的目的主要是保证只要父进程想知道子进程结束时的状态信息，就可以得到</p><p>僵尸进程：一个进程使用 fork 创建子进程，如果子进程退出，而父进程并没有调用 wait 或 waitpid 获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中，这种进程称之为僵死进程。</p><p>孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么这些子进程将成为孤儿进程。孤儿进程将被 init 进程(进程号为1)所收养，并由 init 进程对它们完成状态收集工作。</p><h1 id="僵尸进程与孤儿进程的危害："><a href="#僵尸进程与孤儿进程的危害：" class="headerlink" title="僵尸进程与孤儿进程的危害："></a>僵尸进程与孤儿进程的危害：</h1><p>​        僵尸进程虽然不占有任何内存空间，但如果父进程不调用 wait() &#x2F; waitpid() 的话，那么保留的信息就不会释放，其进程号就会一直被占用，而系统所能使用的进程号是有限的，如果大量的产生僵死进程，将因为没有可用的进程号而导致系统不能产生新的进程，此即为僵尸进程的危害。</p><p>​孤儿进程是没有父进程的进程，孤儿进程这个重任就落到了 init 进程身上，init 进程就好像是一个民政局，专门负责处理孤儿进程的善后工作。每当出现一个孤儿进程的时候，内核就把孤儿进程的父进程设置为 init，而 init 进程会循环地 wait() 它的已经退出的子进程。这样，当一个孤儿进程凄凉地结束了其生命周期的时候，init 进程就会出面处理它的一切善后工作。因此孤儿进程并不会有什么危害。</p><p>​如果子进程在 exit() 之后，父进程没有来得及处理，这时用 ps 命令就能看到子进程的状态是“Z”。如果父进程能及时处理，可能用 ps 命令就来不及看到子进程的僵尸状态，但这并不等于子进程不经过僵尸状态。 如果父进程在子进程结束之前退出，则子进程将由 init 接管。init 将会以父进程的身份对僵尸状态的子进程进行处理。</p><h1 id="如何解决僵尸进程造成的问题："><a href="#如何解决僵尸进程造成的问题：" class="headerlink" title="如何解决僵尸进程造成的问题："></a>如何解决僵尸进程造成的问题：</h1><p>（1）方案一：父进程通过 wait 和 waitpid 等函数等待子进程结束，但这会导致父进程挂起，所以这并不是一个好办法，父进程如果不能和子进程并发执行的话，那我们创建子进程的意义就没有。同时一个 wait 只能解决一个子进程，如果有多个子进程就要用到多个 wait</p><p>（2）方案二：通过信号机制：</p><p>​子进程退出时，向父进程发送 SIGCHILD 信号，父进程处理 SIGCHILD 信号，在信号处理函数中调用 wait 进行处理僵尸进程。</p><p>（3）方案三：fork两次：</p><p>​原理是将进程成为孤儿进程，从而其的父进程变为 init 进程，通过 init 进程处理僵尸进程。具体操作为：父进程一次 fork() 后产生一个子进程随后立即执行 wait(NULL) 来等待子进程结束，然后子进程 fork() 后产生孙子进程随后立即exit(0)。这样子进程顺利终止（父进程仅仅给子进程收尸，并不需要子进程的返回值），然后父进程继续执行。这时的孙子进程由于失去了它的父进程（即是父进程的子进程），将被转交给Init进程托管。于是父进程与孙子进程无继承关系了，它们的父进程均为Init，Init进程在其子进程结束时会自动收尸，这样也就不会产生僵死进程了</p><p>（4）方案四：kill 父进程：</p><p>​严格地来说，僵死进程并不是问题的根源，罪魁祸首是产生出大量僵死进程的那个父进程。因此，当我们寻求如何消灭系统中大量的僵死进程时，答案就是把产生大量僵死进程的那个元凶枪毙掉（也就是通过 kill 发送 SIGTERM 或者 SIGKILL 信号啦）。枪毙了元凶进程之后，它产生的僵死进程就变成了孤儿进 程，这些孤儿进程会被 init 进程接管，init 进程会 wait() 这些孤儿进程，释放它们占用的系统进程表中的资源，这样，这些已经僵死的孤儿进程就能瞑目而去了。</p>]]></content>
     
     
     <categories>
       
-      <category>面经整理</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>面经</tag>
-      
-      <tag>消息队列</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>操作系统（面经）</title>
-    <link href="/2022/05/07/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/05/07/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    
-    <categories>
-      
-      <category>面经整理</category>
+      <category>操作系统</category>
       
     </categories>
     
@@ -358,87 +244,6 @@
       <tag>面经</tag>
       
       <tag>操作系统</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Java多线程(面经)</title>
-    <link href="/2022/05/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/05/07/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
-    
-    <content type="html"><![CDATA[<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><h2 id="进程与线程的区别-1"><a href="#进程与线程的区别-1" class="headerlink" title="进程与线程的区别 1"></a>进程与线程的区别 <em>1</em></h2><h2 id="进程间的通信方式有哪些-1"><a href="#进程间的通信方式有哪些-1" class="headerlink" title="进程间的通信方式有哪些 1"></a>进程间的通信方式有哪些 <em>1</em></h2><h2 id="共享内存的原理-1"><a href="#共享内存的原理-1" class="headerlink" title="共享内存的原理 1"></a>共享内存的原理 <em>1</em></h2><h1 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h1><h2 id="ReenteredLock用了Unsafe类的什么方法-1"><a href="#ReenteredLock用了Unsafe类的什么方法-1" class="headerlink" title="ReenteredLock用了Unsafe类的什么方法 1"></a>ReenteredLock用了Unsafe类的什么方法 <em>1</em></h2><h1 id="Synchronized"><a href="#Synchronized" class="headerlink" title="Synchronized"></a>Synchronized</h1><h2 id="Synchronized与ReenteredLock有什么区别-1"><a href="#Synchronized与ReenteredLock有什么区别-1" class="headerlink" title="Synchronized与ReenteredLock有什么区别 1"></a>Synchronized与ReenteredLock有什么区别 <em>1</em></h2><h1 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h1><h1 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h1><h2 id="如何打破线程池先放队列再扩容的逻辑，有什么框架实现了-1"><a href="#如何打破线程池先放队列再扩容的逻辑，有什么框架实现了-1" class="headerlink" title="如何打破线程池先放队列再扩容的逻辑，有什么框架实现了 1"></a>如何打破线程池先放队列再扩容的逻辑，有什么框架实现了 <em>1</em></h2><h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><h2 id="ThreadLocal的实现原理-1"><a href="#ThreadLocal的实现原理-1" class="headerlink" title="ThreadLocal的实现原理 1"></a>ThreadLocal的实现原理 <em>1</em></h2>]]></content>
-    
-    
-    <categories>
-      
-      <category>面经整理</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>面经</tag>
-      
-      <tag>Java多线程</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>计算机网络（面经）</title>
-    <link href="/2022/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/05/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
-    
-    <content type="html"><![CDATA[<h1 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h1><h2 id="url为什么有时候获取的是网页有时候直接下载图片-x2F-文件-1"><a href="#url为什么有时候获取的是网页有时候直接下载图片-x2F-文件-1" class="headerlink" title="url为什么有时候获取的是网页有时候直接下载图片&#x2F;文件 1"></a>url为什么有时候获取的是网页有时候直接下载图片&#x2F;文件 <em>1</em></h2><h2 id="http和https的区别-1"><a href="#http和https的区别-1" class="headerlink" title="http和https的区别 1"></a>http和https的区别 <em>1</em></h2><h2 id="http2-0-相较于1-0-有什么改动-1"><a href="#http2-0-相较于1-0-有什么改动-1" class="headerlink" title="http2.0 相较于1.0 有什么改动 1"></a>http2.0 相较于1.0 有什么改动 <em>1</em></h2><h1 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h1><h2 id="讲一下TCP和UDP-1"><a href="#讲一下TCP和UDP-1" class="headerlink" title="讲一下TCP和UDP 1"></a>讲一下TCP和UDP <em>1</em></h2><h2 id="三次握手-1"><a href="#三次握手-1" class="headerlink" title="三次握手 1"></a>三次握手 <em>1</em></h2><h2 id="四次挥手-1"><a href="#四次挥手-1" class="headerlink" title="四次挥手 1"></a>四次挥手 <em>1</em></h2><h1 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h1><h2 id="子网掩码-1"><a href="#子网掩码-1" class="headerlink" title="子网掩码 1"></a>子网掩码 <em>1</em></h2><h2 id="子网和外网传输区别-1"><a href="#子网和外网传输区别-1" class="headerlink" title="子网和外网传输区别 1"></a>子网和外网传输区别 <em>1</em></h2><h2 id="路由表大概长啥样-1"><a href="#路由表大概长啥样-1" class="headerlink" title="路由表大概长啥样 1"></a>路由表大概长啥样 <em>1</em></h2><h2 id="NAT是什么，如何工作的-1"><a href="#NAT是什么，如何工作的-1" class="headerlink" title="NAT是什么，如何工作的 1"></a>NAT是什么，如何工作的 <em>1</em></h2><h1 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h1><h1 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h1>]]></content>
-    
-    
-    <categories>
-      
-      <category>面经整理</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>面经</tag>
-      
-      <tag>计算机网络</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Java基础(面经)</title>
-    <link href="/2022/05/07/Java%E5%9F%BA%E7%A1%80%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/05/07/Java%E5%9F%BA%E7%A1%80%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
-    
-    <content type="html"><![CDATA[<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><h2 id="所有异常的共同祖先是？运行时异常有哪几个？"><a href="#所有异常的共同祖先是？运行时异常有哪几个？" class="headerlink" title="所有异常的共同祖先是？运行时异常有哪几个？"></a>所有异常的共同祖先是？运行时异常有哪几个？</h2>]]></content>
-    
-    
-    <categories>
-      
-      <category>面经整理</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>面经</tag>
-      
-      <tag>Java基础</tag>
       
     </tags>
     
