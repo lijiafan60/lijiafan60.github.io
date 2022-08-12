@@ -4,12 +4,18 @@
   
   
   <entry>
-    <title>柠檬微趣Unity3D客户端一面</title>
-    <link href="/2022/08/08/%E6%9F%A0%E6%AA%AC%E5%BE%AE%E8%B6%A3Unity3D%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%80%E9%9D%A2/"/>
-    <url>/2022/08/08/%E6%9F%A0%E6%AA%AC%E5%BE%AE%E8%B6%A3Unity3D%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%80%E9%9D%A2/</url>
+    <title>猿辅导服务端一面</title>
+    <link href="/2022/08/12/%E7%8C%BF%E8%BE%85%E5%AF%BC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%80%E9%9D%A2/"/>
+    <url>/2022/08/12/%E7%8C%BF%E8%BE%85%E5%AF%BC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%80%E9%9D%A2/</url>
     
-    <content type="html"><![CDATA[<h1 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h1><h1 id="项目相关"><a href="#项目相关" class="headerlink" title="项目相关"></a>项目相关</h1><ol><li>抽奖算法的结构</li><li>分库分表具体是怎么做的<h1 id="c"><a href="#c" class="headerlink" title="c++"></a>c++</h1></li><li>vector底层</li><li>vector扩容是怎么做的</li><li>map的底层</li><li>vector和map的erase的区别</li><li>map取元素的时间复杂度</li><li>unordered_map取元素的时间复杂度</li></ol><h1 id="java"><a href="#java" class="headerlink" title="java"></a>java</h1><ol><li>array底层</li><li>array扩容</li><li>arraylist和linkedlist的区别</li><li>什么时候更适合linkedlist</li><li>值传递和引用传递</li><li>ConcurrentHashmap如何做到线程安全的</li><li>TreeMap底层原理</li></ol><h1 id="场景题"><a href="#场景题" class="headerlink" title="场景题"></a>场景题</h1><ol><li>让你设计一个数据库用treemap还是hashmap更好？为什么？<ul><li>选树形结构的。</li><li>能支持范围操作，排序操作，但是平衡树不合适，io太频繁。</li><li>hashmap存在空间浪费，不适合大量数据。</li></ul></li></ol><h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><ol><li>从1~n中选n-1个数放在数组中，找出没选中的那个数。（数组有序&#x2F;数组无序）</li><li>从1~n中选n-2个数放在数组中，找出没选中的两个数。</li><li>给定二叉树中序遍历和先序遍历，还原二叉树。</li><li>快排</li></ol>]]></content>
+    <content type="html"><![CDATA[<h1 id="项目相关"><a href="#项目相关" class="headerlink" title="项目相关"></a>项目相关</h1><ol><li>爬虫项目用的网络请求框架是什么</li><li>xxl-job的实现原理</li><li>redis如何实现限流</li></ol><h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><ol><li>ACID</li><li>事物的隔离级别，分别解决的什么问题</li><li>RC与RR的实现原理</li><li>undolog有什么用</li><li>redolog有什么用</li><li>redolog和undolog的记录方式有什么区别</li><li>binlog和redolog的区别</li><li>mysql的主从同步</li></ol><h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><ol><li>垃圾回收机制</li><li>垃圾收集器了解哪些</li><li>jvm配置看过吗，项目中有没有遇到什么相关问题</li></ol><h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><ol><li>讲一下java的锁</li><li>线程之间的同步方式</li><li>介绍一下乐观锁和悲观锁</li></ol><h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><ol><li>讲一下IO</li><li>三次握手是在哪一层</li><li>三次握手建立的链接叫什么，学名</li><li>socket里面存的是什么</li></ol><h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><ol><li>zset的实现原理</li><li>跳表的实现原理</li></ol><h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><ol><li>从一个非递减数组中找出目标数字在数组中的起始位置</li><li>实现跳表</li></ol>]]></content>
     
+    
+    <categories>
+      
+      <category>面经</category>
+      
+    </categories>
     
     
     <tags>
@@ -23,16 +29,41 @@
   
   
   <entry>
-    <title>Java基础(面经)</title>
-    <link href="/2022/08/06/Java%E5%9F%BA%E7%A1%80%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/"/>
-    <url>/2022/08/06/Java%E5%9F%BA%E7%A1%80%EF%BC%88%E9%9D%A2%E7%BB%8F%EF%BC%89/</url>
+    <title>Hashmap源码解析</title>
+    <link href="/2022/08/09/Hashmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+    <url>/2022/08/09/Hashmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</url>
     
-    <content type="html"><![CDATA[<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><h2 id="所有异常的共同祖先是？运行时异常有哪几个？-1"><a href="#所有异常的共同祖先是？运行时异常有哪几个？-1" class="headerlink" title="所有异常的共同祖先是？运行时异常有哪几个？ 1"></a>所有异常的共同祖先是？运行时异常有哪几个？ <em>1</em></h2>]]></content>
+    <content type="html"><![CDATA[]]></content>
     
     
     <categories>
       
-      <category>面经整理</category>
+      <category>Java集合</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>源码解析</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>柠檬微趣Unity3D客户端一面</title>
+    <link href="/2022/08/08/%E6%9F%A0%E6%AA%AC%E5%BE%AE%E8%B6%A3Unity3D%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%80%E9%9D%A2/"/>
+    <url>/2022/08/08/%E6%9F%A0%E6%AA%AC%E5%BE%AE%E8%B6%A3Unity3D%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%80%E9%9D%A2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h1><h1 id="项目相关"><a href="#项目相关" class="headerlink" title="项目相关"></a>项目相关</h1><ol><li>抽奖算法的结构</li><li>分库分表具体是怎么做的<h1 id="c"><a href="#c" class="headerlink" title="c++"></a>c++</h1></li><li>vector底层</li><li>vector扩容是怎么做的</li><li>map的底层</li><li>vector和map的erase的区别</li><li>map取元素的时间复杂度</li><li>unordered_map取元素的时间复杂度</li></ol><h1 id="java"><a href="#java" class="headerlink" title="java"></a>java</h1><ol><li>Array底层</li><li>ArrayList扩容</li><li>Arraylist和Linkedlist的区别</li><li>什么时候更适合Linkedlist</li><li>值传递和引用传递</li><li>ConcurrentHashmap如何做到线程安全的</li><li>介绍一下gc</li><li>TreeMap底层原理</li></ol><h1 id="场景题"><a href="#场景题" class="headerlink" title="场景题"></a>场景题</h1><ol><li>让你设计一个数据库用treemap还是hashmap更好？为什么？<ul><li>选树形结构的。</li><li>能支持范围操作，排序操作，但是平衡树不合适，io太频繁。</li><li>hashmap存在空间浪费，不适合大量数据。</li></ul></li></ol><h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><ol><li>从1~n中选n-1个数放在数组中，找出没选中的那个数。（数组有序&#x2F;数组无序）</li><li>从1~n中选n-2个数放在数组中，找出没选中的两个数。</li><li>给定二叉树中序遍历和先序遍历，还原二叉树。</li><li>快排</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>面经</category>
       
     </categories>
     
@@ -40,8 +71,6 @@
     <tags>
       
       <tag>面经</tag>
-      
-      <tag>Java基础</tag>
       
     </tags>
     
