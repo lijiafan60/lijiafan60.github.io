@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>猿辅导服务端二面</title>
+    <link href="/2022/08/20/%E7%8C%BF%E8%BE%85%E5%AF%BC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BA%8C%E9%9D%A2/"/>
+    <url>/2022/08/20/%E7%8C%BF%E8%BE%85%E5%AF%BC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BA%8C%E9%9D%A2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h1><ol><li>路由组件具体是怎么实现的,能详细介绍下吗</li><li>实际项目中分库分表要考虑哪些东西？比如16个分片 是2<em>8 还是4</em>4 还是 8*2，该怎么考虑？</li><li>Kafka中有哪些角色？</li><li>Kafka是怎么存储消息的？文件结构知道吗？</li><li>Redis底层是怎么找到对应的key的呢？</li><li>SpringTask在操作系统底层是怎么进行定时任务的，定时任务的原理你了解吗？</li><li>Redis + lua 你是怎么实现接口限流的呢？</li><li>为什么要用redis做接口限流呢？你的爬虫项目是分布式部署的吗？</li><li>看你用了多线程爬虫，那你说说线程池的核心参数有哪些吧？</li><li>线程池核心线程数满了之后会怎么样？</li><li>如果线程池达到了最大线程数，它会一直保持这个数量的线程吗？如果不会，那多余的线程会在什么时候销毁呢？</li></ol><h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><ol><li>（力扣原题）剑指 Offer II 026. 重排链表</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>面经</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>面经</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>猿辅导服务端一面</title>
     <link href="/2022/08/12/%E7%8C%BF%E8%BE%85%E5%AF%BC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%80%E9%9D%A2/"/>
     <url>/2022/08/12/%E7%8C%BF%E8%BE%85%E5%AF%BC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%80%E9%9D%A2/</url>
