@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Redis的key是如何寻址的</title>
+    <link href="/2022/08/22/Redis%E7%9A%84key%E6%98%AF%E5%A6%82%E4%BD%95%E5%AF%BB%E5%9D%80%E7%9A%84/"/>
+    <url>/2022/08/22/Redis%E7%9A%84key%E6%98%AF%E5%A6%82%E4%BD%95%E5%AF%BB%E5%9D%80%E7%9A%84/</url>
+    
+    <content type="html"><![CDATA[<p>Redis 服务器在初始化时，默认的会预先分配 16 个数据库。这其中的每一个数据库，都由一个 redisDb 的结构存储。redisDb 的结构中有两个重要的部分：</p><ul><li><p>id：存储着 redis 数据库以整数表示的号码。</p></li><li><p>dict：存储着该库所有的键值对数据。</p></li><li><p>expires：保存着每一个键的过期时间。</p></li></ul><p>针对 Redis 中的众多数据库，当我们使用 select number 选择数据库时，程序可以直接通过 redisServer.db[number] 来切换数据库。有时候当程序需要知道自己是在哪个数据库时，也可以直接通过读取 redisDb.id 即可。</p><p>Redis 的字典使用哈希表作为其底层实现。dict 类型使用的两个指向哈希表的指针，其中 0 号哈希表（ht[0]）主要用于存储数据库的所有键值，而 1 号哈希表主要用于程序对 0 号哈希表进行 rehash 时使用，rehash 一般是在添加新值时会触发，这里不做过多的赘述。所以 redis 中查找一个 key，其实就是对进行该 dict 结构中的 ht[0] 进行查找操作。</p><p>既然是哈希，那么我们知道就会有哈希碰撞，那么当多个键哈希之后为同一个值怎么办呢？redis 采取链表的方式来存储多个哈希碰撞的键。也就是说，当根据 key 的哈希值找到该列表后，如果列表的长度大于 1，那么我们需要遍历该链表来找到我们所查找的 key。当然，一般情况下链表长度都为是 1，所以时间复杂度可看作 o(1)。</p><p>根据上面的解释，以及官方文档和源码解毒。我们可以得出，Redis 的 Key 寻址包含一下步骤：</p><p>当拿到一个 key 后，redis 先判断当前库的 0 号哈希表是否为空，即：if (dict-&gt;ht[0].size &#x3D;&#x3D; 0)。如果为 true 直接返回 NULL。</p><p>判断该 0 号哈希表是否需要 rehash，因为如果在进行 rehash，那么两个表中都有可能存储该 key。如果正在进行 rehash，将调用一次_dictRehashStep 方法，_dictRehashStep 用于对数据库字典、以及哈希键的字典进行被动 rehash。</p><p>计算哈希表，根据当前字典与 key 进行哈希值的计算。</p><p>根据哈希值与当前字典计算哈希表的索引值。</p><p>根据索引值在哈希表中取出链表，遍历该链表找到 key 的位置。一般情况，该链表长度为 1。</p><p>当 ht[0] 查找完了之后，再进行了次 rehash 判断，如果未在 rehashing，则直接结束，否则对 ht[1]重复 345 步骤。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Redis</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Redis</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>猿辅导服务端二面</title>
     <link href="/2022/08/20/%E7%8C%BF%E8%BE%85%E5%AF%BC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BA%8C%E9%9D%A2/"/>
     <url>/2022/08/20/%E7%8C%BF%E8%BE%85%E5%AF%BC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%BA%8C%E9%9D%A2/</url>
@@ -111,6 +136,12 @@
     <content type="html"><![CDATA[<h1 id="简单动态字符串-SDS"><a href="#简单动态字符串-SDS" class="headerlink" title="简单动态字符串 (SDS)"></a>简单动态字符串 (SDS)</h1><p>SDS 和我们认识的 C 字符串不太一样，之所以没有使用 C 语言的字符串表示，因为 SDS 相比于 C 的原生字符串：</p><p>SDS 不仅可以保存文本数据，还可以保存二进制数据。因为 SDS 使用 len 属性的值而不是空字符来判断字符串是否结束，并且 SDS 的所有 API 都会以处理二进制的方式来处理 SDS 存放在 buf[] 数组里的数据。所以 SDS 不光能存放文本数据，而且能保存图片、音频、视频、压缩文件这样的二进制数据。<br>SDS 获取字符串长度的时间复杂度是 O(1)。因为 C 语言的字符串并不记录自身长度，所以获取长度的复杂度为 O(n)；而 SDS 结构里用 len 属性记录了字符串长度，所以复杂度为 O(1)。<br>Redis 的 SDS API 是安全的，拼接字符串不会造成缓冲区溢出。因为 SDS 在拼接字符串之前会检查 SDS 空间是否满足要求，如果空间不够会自动扩容，所以不会导致缓冲区溢出的问题。</p><h1 id="C-语言中的字符串"><a href="#C-语言中的字符串" class="headerlink" title="C 语言中的字符串"></a>C 语言中的字符串</h1><p>C 语言中传统字符串是使用长度为 N+1 的字符数组来表示长度为 N 的字符串，并且字符串数组的最后一个元素总是空字符 ‘\0’。并且获取字符串长度的函数的时间复杂度为O(N)。</p><h1 id="SDS-的定义"><a href="#SDS-的定义" class="headerlink" title="SDS 的定义"></a>SDS 的定义</h1><p>在 Redis 源码文件 sds.h 中定义了 SDS 的结构，如下所示：</p><figure class="highlight c++"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">sdshdr</span> &#123;<br>    <span class="hljs-comment">// 记录 buf 数组中已使用的数量</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> len; <br>    <span class="hljs-comment">// 记录 buf 中未使用的空间数量</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> free; <br>    <span class="hljs-comment">// 字符数组，用于保存字符串</span><br>    <span class="hljs-type">char</span> buf[];  <br>&#125;;<br></code></pre></td></tr></table></figure><p>有上面的源码，我们看到 SDS 中也是使用字符数组来存放字符串，但是，它是通过 属性 len 来表示当前字符串的长度。</p><h1 id="SDS-与-C-字符串的区别"><a href="#SDS-与-C-字符串的区别" class="headerlink" title="SDS 与 C 字符串的区别"></a>SDS 与 C 字符串的区别</h1><h2 id="获取字符串长度的复杂度"><a href="#获取字符串长度的复杂度" class="headerlink" title="获取字符串长度的复杂度"></a>获取字符串长度的复杂度</h2><p>因为 C 字符串不记录自身的长度，所以在获取一个 C 字符串的长度时，需要遍历整个字符数组，对遇到的每个字符进行计数，知道遇到代表字符串结尾的空字符串’\0’ 为止，那么，这个操作的复杂度为 O(N)。</p><p>上面的 SDS 结构的源码，我们可知，SDS 字符串通过 len 记录了当前字符串的长度，那么当获取 SDS 的字符串长度的复杂度仅为 O(1)。这就确保了获取字符串长度的工作不会成为 Redis 的性能瓶颈，因为不管字符串多长，其获取长度的复杂度都是O(1)。这或许也是 Redis 快的一个原因吧。</p><h2 id="杜绝缓冲区溢出"><a href="#杜绝缓冲区溢出" class="headerlink" title="杜绝缓冲区溢出"></a>杜绝缓冲区溢出</h2><p>我们在日常 Java 开发中，经常会用到字符串的拼接，在 C 语言 和 Redis 中也经常用到字符串的拼接。由于 C 字符串不记录自身长度，这样就带来了一个问题就是，如果在拼接字符串时，如果内存计算不当，就会造成缓冲区溢出。</p><p>由 SDS 的结构我们可知，SDS 有 len 存储了当前长度，还有 free 存储了未使用的长度，这样就简单多了，当操作字符串拼接时，可以先判断一下 free 和需要拼接的字符串，是否能够存的下，如放的下则直接执行，如果放不下，则进行扩容操作。</p><h2 id="二进制安全"><a href="#二进制安全" class="headerlink" title="二进制安全"></a>二进制安全</h2><p>我们上文提的 C 字符串中是以空字符 ‘\0’ 来表示 C 字符串的终止符号。这样字符串里就不能包含空字符，否则最先被读入的空字符将被误认为字符串传结尾，这些限制使得 C 字符串只能保存文本数据，而不能保存像图片、音频、视频、压缩文件等这样的二进制数据。</p><p>在 Redis 中 SDS 中就不存在此问题，因为在 SDS 中通过 len 属性保存了字符串的长度，所以，在 SDS 中是通过 len 属性的值而不是空字符来判断字符串的是否结束。</p><p>通过使用二进制安全的 SDS，而不是 C 字符串，使得Redis不仅可以保存文本数据，还可以保存任意格式的二进制数据。</p>]]></content>
     
     
+    <categories>
+      
+      <category>Redis</category>
+      
+    </categories>
+    
     
     <tags>
       
@@ -209,7 +240,7 @@
   
   
   <entry>
-    <title>git使用指南</title>
+    <title>git常用命令</title>
     <link href="/2022/06/06/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
     <url>/2022/06/06/git%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</url>
     
